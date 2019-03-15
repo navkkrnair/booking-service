@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+	<property name="spring.application.name" value="booking-service" />
+	<property name="LOG_PATTERN"
+		value="%d{yyyy-MM-dd HH:mm:ss.SSS} [${spring.application.name}] [trace=%X{X-B3-TraceId:-},span=%X{X-B3-SpanId:-}] [%15.15t] %-40.40logger{39}: %m%n" />
+	<property name="LOGSTASH_SERVER" value="localhost:4560" />
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		encoders are assigned the type
+		ch.qos.logback.classic.encoder.PatternLayoutEncoder
+		by default
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="stash"
+		class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+		<destination>${LOGSTASH_SERVER}</destination>
+		<!-- encoder is required -->
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="stash" /> 
+	</root>
+</configuration>

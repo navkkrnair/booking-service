@@ -1,0 +1,18 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: booking-service
+  cloud:
+    config:
+      username: configuser
+      password: configpassword
+      uri: http://${CONFIG_SERVER}:8888
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+ribbon:
+  eureka:
+   enabled: false             
